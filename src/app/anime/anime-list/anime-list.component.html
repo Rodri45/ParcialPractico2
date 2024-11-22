@@ -1,18 +1,27 @@
-  <br>
-  <div class="container contenedor-animes">
-  <div class="row">
-    <p>La cantidad total de episodios es 2326 y el rating promedio es 8.03</p>
-    <div *ngIf="selected">
-      <app-anime-detail [animeDetail]="selectedBAnime"></app-anime-detail>
-      <hr>
+<div class="container text-center">
+  <img src="assets/animeLogo.png" alt="Anime Logo" class="my-4 logo">
+  <p class="lead">
+    La cantidad total de episodios es {{ getTotalEpisodes() }} y el rating promedio es {{ getAverageRating() | number:'1.2-2' }}
+  </p>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" *ngFor="let anime of animes">
+      <div class="card h-100">
+        <img src="{{ anime.img }}" class="card-img-top img-fluid" alt="{{ anime.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ anime.name }}</h5>
+          <p class="card-text">
+            <strong>⭐ {{ anime.Rating }}</strong> <br>
+            <small class="text-muted">Categories: {{ anime.categorie }}</small>
+          </p>
+          <button class="btn btn-primary btn-sm" (click)="onSelected(anime)">More information</button>
+        </div>
+      </div>
     </div>
-    <div class="col-4" *ngFor="let anime of animes">
-        <p>{{anime.name}}</p>
-        <img src={{anime.img}}  alt="anime image" width=50px>
-        <p>⭐{{anime.Rating}} <b>Categories: </b>{{anime.categorie}}</p>
-        <a href="#" (click)="onSelected(anime)">More information</a>
-        <hr>
-   </div>
+  </div>
 
+  <div class="anime-detail mt-5" *ngIf="selected">
+    <app-anime-detail [animeDetail]="selectedAnime"></app-anime-detail>
+    <button class="btn btn-secondary btn-sm mt-3" (click)="clearSelection()">Back</button>
   </div>
 </div>
+

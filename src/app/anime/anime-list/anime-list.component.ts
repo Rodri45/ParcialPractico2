@@ -9,10 +9,15 @@ import { AnimeService } from '../anime.service';
 })
 export class AnimeListComponent implements OnInit {
 
-  selectedBAnime!: Anime;
+  animes: Anime[] = [];
+  selectedAnime!: Anime;
   selected = false;
-  animes: Array<Anime> = [];
+
   constructor(private animeService: AnimeService) { }
+
+  ngOnInit(): void {
+    this.getAnimes();
+  }
 
   getAnimes(): void {
     this.animeService.getAnimes().subscribe((animes) => {
@@ -21,12 +26,21 @@ export class AnimeListComponent implements OnInit {
   }
 
   onSelected(anime: Anime): void {
+    this.selectedAnime = anime;
     this.selected = true;
-    this.selectedBAnime = anime;
   }
 
-  ngOnInit() {
-    this.getAnimes();
+  clearSelection(): void {
+    this.selected = false;
   }
 
+  getTotalEpisodes(): number {
+    return this.animes.reduce((total, anime) => total + anime.episode, 0);
+  }
+
+  getAverageRating(): number {
+    const totalRating = this.animes.reduce((total, anime) => total + parseFloat(anime.Rating), 0);
+    return this.animes.length > 0 ? totalRating / this.animes.length : 0;
+  }
 }
+
